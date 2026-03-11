@@ -2,8 +2,6 @@
 
 Real-time RabbitMQ queue health monitor. Polls the RabbitMQ Management HTTP API, evaluates queue metrics against configurable thresholds, fires Slack alerts on breach, and persists all data to PostgreSQL for Grafana dashboards.
 
-**Week 4 of 42** — Enterprise Automation Portfolio
-
 ---
 
 ## What It Does
