@@ -1,0 +1,42 @@
+# RabbitMQ Event Monitor — Configuration
+# All values can be overridden by environment variables (see .env.example)
+
+poll_interval_seconds: 60
+log_level: INFO
+
+rabbitmq:
+  host: localhost
+  port: 15672        # RabbitMQ Management API port (default: 15672)
+  username: guest
+  password: guest
+  use_ssl: false
+
+slack:
+  webhook_url: ""    # Set via SLACK_WEBHOOK_URL env var
+  channel: "#ops-alerts"
+  username: "RabbitMQ Monitor"
+  send_summary: false  # Post cycle summary every poll (noisy — disable for production)
+
+database:
+  enabled: false     # Set to true when DATABASE_URL is configured
+  dsn: ""            # Set via DATABASE_URL env var
+
+thresholds:
+  # Queue depth (total messages in queue)
+  queue_depth_warning: 500
+  queue_depth_critical: 2000
+
+  # Consumer lag (unacknowledged messages being processed)
+  consumer_lag_warning: 100
+  consumer_lag_critical: 500
+
+  # Dead-letter queue thresholds
+  dlq_depth_warning: 1       # Any DLQ message triggers WARNING
+  dlq_depth_critical: 50     # 50+ DLQ messages triggers CRITICAL
+
+  # Alert when a queue has messages but zero consumers
+  alert_on_no_consumers: true
+
+  # Queue name prefixes to skip entirely (RabbitMQ internal queues)
+  ignored_prefixes:
+    - "amq."
