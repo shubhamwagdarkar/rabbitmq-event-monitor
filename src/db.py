@@ -4,8 +4,11 @@ import logging
 from contextlib import contextmanager
 from typing import Generator
 
-import psycopg2
-import psycopg2.extras
+try:
+    import psycopg2
+    import psycopg2.extras
+except ImportError:
+    psycopg2 = None
 
 from src.models import Alert, MonitorSummary, QueueMetrics
 
@@ -63,6 +66,8 @@ class Database:
         self._conn = None
 
     def connect(self) -> None:
+        if psycopg2 is None:
+            raise RuntimeError("psycopg2 is not installed. Run: pip install psycopg2-binary")
         self._conn = psycopg2.connect(self.dsn)
         logger.info("Connected to PostgreSQL")
 
